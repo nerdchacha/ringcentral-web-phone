@@ -1,5 +1,5 @@
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
@@ -36,7 +36,8 @@ const libConfig = {
         ]
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js'],
+        fullySpecified: false
     },
     externals: {
         getstats: {
@@ -69,12 +70,8 @@ if (isProduction) {
         [`${key}.min`]: src
     };
     libConfig.optimization = {
-        minimize: true
-        // minimizer: [
-        //     new UglifyJsPlugin({
-        //         include: /\.min\.js$/
-        //     })
-        // ]
+        minimize: true,
+        minimizer: [new TerserPlugin()]
     };
 }
 
