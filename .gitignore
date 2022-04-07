@@ -5,6 +5,6 @@
 .env
 .screenshots
 dist
-lib
+# lib
 *npm-debug*
 node_modules
