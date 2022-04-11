@@ -245,7 +245,6 @@ function createRcMessage(this: WebPhoneUserAgent, options: RCHeaders): string {
     );
 }
 
-// DOCUMENT: ClientContext class has been removed. New type is IncomingResponse
 function sendMessage(this: WebPhoneUserAgent, to: string, messageData: string): Promise<IncomingResponse> {
     const extraHeaders = [`P-rc-ws: ${this.contact}`];
     // For some reason, UserAgent.makeURI is unable to parse username starting with #

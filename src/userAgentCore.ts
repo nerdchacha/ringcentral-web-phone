@@ -36,7 +36,6 @@ function receiveIncomingRequestFromTransport(this: WehPhoneUserAgentCore, messag
         case C.UPDATE: {
             (this as any).logger.log('Receive UPDATE request. Do nothing just return 200 OK');
             this.replyStateless(message, { statusCode: 200 });
-            // DOCUMENT: type has changed
             this.emit(Events.Session.UpdateReceived, message);
             return;
         }

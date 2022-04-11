@@ -74,12 +74,10 @@ export interface RTCPeerConnectionLegacy extends RTCPeerConnection {
 }
 
 export class CommonSession {
-    // DOCUMENT: This has been removed
-    // sendRequest?: typeof sendRequest
-    // onLocalHold?: typeof onLocalHold
-    // receiveRequest?: typeof receiveRequest;
     /** @ignore */
     __isRecording?: boolean;
+    /** @ignore */
+    __localHold?: boolean;
     /** @ignore */
     __patched?: boolean;
     /** @ignore */
@@ -140,6 +138,8 @@ export class CommonSession {
     off?: typeof EventEmitter.prototype.off;
     /** Add event listener. Same as addListener */
     on?: typeof EventEmitter.prototype.on;
+    /** Returns if the call is on hold locally or not */
+    onLocalHold?: typeof onLocalHold;
     /** RingCentral park implementation */
     park?: typeof park;
     /** Send a session reinvite */
@@ -336,16 +336,17 @@ function createSessionMessage(this: WebPhoneSession, options: RCHeaders): string
     return this.userAgent.createRcMessage(options);
 }
 
-//DOCUMENT: Return type has changed and logging has been included here itself
-async function sendReceiveConfirm(this: WebPhoneSession): Promise<void> {
+async function sendReceiveConfirm(this: WebPhoneSession): Promise<IncomingResponse> {
     return this.sendSessionMessage(messages.receiveConfirm)
-        .then(() => (this as any).logger.log('sendReceiveConfirm success'))
+        .then((response) => {
+            (this as any).logger.log('sendReceiveConfirm success');
+            return response;
+        })
         .catch((error) =>
             (this as any).logger.error(`failed to send receive confirmation via SIP MESSAGE due to ${error.message}`)
         );
 }
 
-//DOCUMENT: Return type has changed
 function sendSessionMessage(this: WebPhoneSession, options): Promise<IncomingResponse> {
     if (!this.rcHeaders) {
         (this as any).logger.error("Can't send SIP MESSAGE related to session: no RC headers available");
@@ -353,7 +354,6 @@ function sendSessionMessage(this: WebPhoneSession, options): Promise<IncomingRes
     return this.userAgent.sendMessage(this.rcHeaders.from, this.createSessionMessage(options));
 }
 
-//DOCUMENT: Name has changed
 async function sendInfoAndRecieveResponse(this: WebPhoneSession, command: Command, options?: any): Promise<any> {
     options = options || {};
     extend(command, options);
@@ -447,17 +447,14 @@ function sendMoveResponse(
     this.info({ requestOptions });
 }
 
-//DOCUMENT: Return type has changed
 function ignore(this: WebPhoneSession): Promise<IncomingResponse> {
     return this.sendReceiveConfirm().then(() => this.sendSessionMessage(messages.ignore));
 }
 
-//DOCUMENT: Return type has changed
 function toVoicemail(this: WebPhoneSession): Promise<IncomingResponse> {
     return this.sendReceiveConfirm().then(() => this.sendSessionMessage(messages.toVoicemail));
 }
 
-//DOCUMENT: Return type has changed
 function replyWithMessage(this: WebPhoneSession, replyOptions: ReplyOptions): Promise<IncomingResponse> {
     let body = 'RepTp="' + replyOptions.replyType + '"';
 
@@ -611,8 +608,6 @@ function stopMediaStats(this: WebPhoneSession): void {
     this.noAudioReportCount = 0;
 }
 
-// DOCUMENT: Return type has changed
-// option type has changed
 async function blindTransfer(
     this: WebPhoneSession,
     target: string | URI | WebPhoneSession,
@@ -623,8 +618,6 @@ async function blindTransfer(
     return Promise.resolve(this.refer(target, options));
 }
 
-// DOCUMENT: Return type has changed
-// option type has changed
 async function warmTransfer(
     this: WebPhoneSession,
     target: string | URI | WebPhoneSession,
@@ -638,8 +631,6 @@ async function warmTransfer(
     return Promise.resolve(this.refer(target, options));
 }
 
-// DOCUMENT: Return type has changed
-// option type has changed
 async function transfer(
     this: WebPhoneSession,
     target: string | URI | WebPhoneSession,
@@ -651,8 +642,6 @@ async function transfer(
     return this.blindTransfer(target, options);
 }
 
-// DOCUMENT: Return type has changed
-// option type has changed
 /**
  *
  * @param this WebPhoneSessionSessionInviteOptions
@@ -851,8 +840,13 @@ function setHold(session: WebPhoneSession, hold: boolean): Promise<void> {
 
         const options: SessionInviteOptions = {
             requestDelegate: {
-                onAccept: (): void => {
+                onAccept: async (response): Promise<void> => {
                     session.held = hold;
+                    const sdp = (await session.sessionDescriptionHandler.getDescription()).body;
+                    const match = sdp.match(/a=(sendrecv|sendonly|recvonly|inactive)/);
+                    const direction = match ? match[1] : '';
+                    session.__localHold = response.message.statusCode === 200 && direction === 'sendonly';
+                    this.logger.log('localhold is set to ' + this.__localHold);
                     enableReceiverTracks(session, !session.held);
                     enableSenderTracks(session, !session.held && !session.muted);
                     resolve();
@@ -939,4 +933,8 @@ function stopMediaStreamStats(session: WebPhoneSession) {
         (session as any).logger.log('Releasing media streams');
         session.mediaStreams.release();
     }
+}
+
+function onLocalHold(this: WebPhoneSession): boolean {
+    return this.__localHold;
 }

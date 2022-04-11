@@ -97,7 +97,6 @@ export class MediaStreamsImpl {
     private isSafari: boolean;
     private mediaStatsTimer: any;
     public preRTT: any;
-    // DOCUMENT: order of params has changed
     /**
      * Set a function to be called when `peerConnetion` iceconnectionstatechange changes
      *
