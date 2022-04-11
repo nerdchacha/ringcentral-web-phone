@@ -44,6 +44,8 @@ export declare class CommonSession {
     /** @ignore */
     __isRecording?: boolean;
     /** @ignore */
+    __localHold?: boolean;
+    /** @ignore */
     __patched?: boolean;
     /** @ignore */
     __userAgentCoreEventsSetup?: boolean;
@@ -106,6 +108,8 @@ export declare class CommonSession {
     off?: typeof EventEmitter.prototype.off;
     /** Add event listener. Same as addListener */
     on?: typeof EventEmitter.prototype.on;
+    /** Returns if the call is on hold locally or not */
+    onLocalHold?: typeof onLocalHold;
     /** RingCentral park implementation */
     park?: typeof park;
     /** Send a session reinvite */
@@ -186,7 +190,7 @@ export declare function patchWebphoneSession(session: WebPhoneSession): WebPhone
 export declare function patchIncomingWebphoneSession(session: WebPhoneSession): void;
 declare function canUseRCMCallControl(this: WebPhoneSession): boolean;
 declare function createSessionMessage(this: WebPhoneSession, options: RCHeaders): string;
-declare function sendReceiveConfirm(this: WebPhoneSession): Promise<void>;
+declare function sendReceiveConfirm(this: WebPhoneSession): Promise<IncomingResponse>;
 declare function sendSessionMessage(this: WebPhoneSession, options: any): Promise<IncomingResponse>;
 declare function sendInfoAndRecieveResponse(this: WebPhoneSession, command: Command, options?: any): Promise<any>;
 declare function startRecord(this: WebPhoneSession): Promise<any>;
@@ -223,4 +227,5 @@ declare function unhold(this: WebPhoneSession): Promise<void>;
 declare function dtmf(this: WebPhoneSession, dtmf: string, duration?: number, interToneGap?: number): void;
 declare function forward(this: WebPhoneSession, target: WebPhoneSession, acceptOptions: InvitationAcceptOptions, transferOptions: SessionReferOptions): Promise<OutgoingReferRequest>;
 export declare function onSessionDescriptionHandlerCreated(session: WebPhoneSession): void;
+declare function onLocalHold(this: WebPhoneSession): boolean;
 export {};
