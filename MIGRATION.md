@@ -17,8 +17,8 @@ More details on `IncomingResponse` can be found on sip.js documentation at [`Inc
 
 sip.js has removed all `userAgent` events
 WebPhone SDK will still supports some basic events on `WebPhoneUserAgent`
-- `registrerd` : Fired when UserAgent is registered with the registerer
-- `unregistrerd` : Fired when UserAgent is unregistered from the registerer
+- `registered` : Fired when UserAgent is registered with the registerer
+- `unregistered` : Fired when UserAgent is unregistered from the registerer
 - `inviteSent` : Fired when Invite is sent
 - `invite` : Fired when Invitation is received
 - `ProvisionUpdate` : Fired when provisionUpdate notification is received from RingCentral backend

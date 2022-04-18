@@ -269,7 +269,7 @@ async function register(this: WebPhoneUserAgent): Promise<void> {
     await this.registerer.register({
         requestDelegate: {
             onAccept: (): void => {
-                this.emit(Events.UserAgent.Registrerd);
+                this.emit(Events.UserAgent.Registered);
             },
             // FIXME: Test this
             onReject: (response): void => {
@@ -289,7 +289,7 @@ async function unregister(this: WebPhoneUserAgent): Promise<void> {
     await this.registerer.unregister({
         requestDelegate: {
             onAccept: (): void => {
-                this.emit(Events.UserAgent.Unregistrerd);
+                this.emit(Events.UserAgent.Unregistered);
             }
         }
     });

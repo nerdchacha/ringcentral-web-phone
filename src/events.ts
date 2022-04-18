@@ -21,9 +21,9 @@ export interface WebPhoneEvents {
     /**  All WebPhone events related to UserAgen */
     UserAgent: {
         /** Fired when UserAgent is registered with the registerer. */
-        Registrerd: string;
+        Registered: string;
         /** Fired when UserAgent is unregistered from the registerer. */
-        Unregistrerd: string;
+        Unregistered: string;
         /** Fired when Invite is sent. */
         InviteSent: string;
         /** Fired when Invitation is received. */
@@ -73,8 +73,8 @@ export const Events: WebPhoneEvents = {
         Closed: 'closed'
     },
     UserAgent: {
-        Registrerd: 'registrerd',
-        Unregistrerd: 'unregistrerd',
+        Registered: 'registered',
+        Unregistered: 'unregistered',
         InviteSent: 'inviteSent',
         Invite: 'invite',
         ProvisionUpdate: 'ProvisionUpdate',
