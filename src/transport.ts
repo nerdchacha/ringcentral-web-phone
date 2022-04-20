@@ -286,7 +286,6 @@ async function reconnect(this: WebPhoneTransport, forceReconnectToMain?: boolean
         this.logger.warn(
             `trying to reconnect to WebSocket ${this.server} (reconnection attempt: ${this.reconnectionAttempts})`
         );
-        // FIXME: handle reconnectTimer on disconnect/error
         this.reconnectTimer = setTimeout(() => {
             this.reconnectTimer = undefined;
             this.connect().then(() => {
@@ -311,7 +310,6 @@ function noAvailableServers(this: WebPhoneTransport): boolean {
     return this.servers.every(({ isError }) => isError);
 }
 
-// FIXME: Need a way to test this
 function isSipErrorCode(this: WebPhoneTransport, statusCode: number | undefined): boolean {
     if (!statusCode) {
         return false;

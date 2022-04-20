@@ -5,6 +5,8 @@
 
 The RingCentral WebPhone Library includes a JavaScript WebRTC library and a WebRTC phone demo app.
 
+Feel free to check out the RingCentral WebPhone [API Docs](docs/api/modules.md)
+
 ## Prerequisites
 
 - You will need an active RingCentral account. Don't have an account? [Get your Free RingCentral Developer Account Now!](https://developers.ringcentral.com)
@@ -24,25 +26,41 @@ Please visit Network Requirement links below
 
 ## Table of Contents
 
-1. [Installation](#installation)
-2. [Usage](#usage)
-  1. [Configuring your RingCentral app](#configuring-your-ringcentral-app)
-  1. [Include Library And HTML Elements](#include-library-and-html-elements)
-  2. [Application](#application)
-3. [Demo](#demo)
-4. [API](#api)
-  1. [Initiating The Call](#initiating-the-call)
-  1. [Accepting Incoming Call](#accepting-incoming-call)
-  1. [DTMF](#dtmf)
-  1. [Hold Unhold](#hold-unhold)
-  1. [Mute Unmute](#mute-unmute)
-  1. [Park](#park)
-  1. [Flip](#flip)
-  1. [Transfer](#transfer)
-  1. [Warm Transfer](#warm-transfer)
-  1. [Forward](#forward)
-  1. [Start/Stop Recording](#startstop-recording)
-  1. [Barge/Whisper](#bargewhisper)
+- [RingCentral WebPhone Library](#ringcentral-webphone-library)
+  - [Prerequisites](#prerequisites)
+  - [Browser Compatibility](#browser-compatibility)
+  - [Network Requirements](#network-requirements)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [If you are not using Bower or NPM:](#if-you-are-not-using-bower-or-npm)
+  - [Usage](#usage)
+    - [Configuring your RingCentral app](#configuring-your-ringcentral-app)
+    - [Include Library And HTML Elements](#include-library-and-html-elements)
+    - [Application](#application)
+  - [Demo](#demo)
+  - [API](#api)
+    - [Constructor](#constructor)
+    - [Attaching Media Streams](#attaching-media-streams)
+    - [Initiating The Call](#initiating-the-call)
+    - [Accepting Incoming Call](#accepting-incoming-call)
+    - [DTMF](#dtmf)
+    - [Hold Unhold](#hold-unhold)
+    - [Mute Unmute](#mute-unmute)
+    - [Park](#park)
+    - [Flip](#flip)
+    - [Transfer](#transfer)
+    - [Warm Transfer](#warm-transfer)
+      - [Handle Warm Transfer senario (Attended Transfer usecase) :](#handle-warm-transfer-senario-attended-transfer-usecase-)
+    - [Forward](#forward)
+    - [Start/Stop Recording](#startstop-recording)
+    - [Barge/Whisper](#bargewhisper)
+  - [Upgrade Procedure from 0.8.9 to 0.9.0](#upgrade-procedure-from-089-to-090)
+  - [Upgrade Procedure from v0.4.X to 0.8.9](#upgrade-procedure-from-v04x-to-089)
+    - [Initialization](#initialization)
+    - [Accept Invites:](#accept-invites)
+    - [Send Invite:](#send-invite)
+    - [Auto Answer incoming calls if Invites containing ``Alert-Info: Auto Answer`` header field:](#auto-answer-incoming-calls-if-invites-containing-alert-info-auto-answer-header-field)
+  - [Compatibility Matrix](#compatibility-matrix)
 
 ---
 
@@ -56,7 +74,7 @@ bower install ringcentral-web-phone
 
 ### If you are not using Bower or NPM:
 
-1. Download SIP.JS: [https://sipjs.com/download/sip-0.13.5.js](https://sipjs.com/download/sip-0.13.5.js)
+1. Download SIP.JS: [https://github.com/onsip/SIP.js/releases/tag/0.20.0](https://github.com/onsip/SIP.js/releases/tag/0.20.0)
 2. Download WebPhone SDK: [https://github.com/ringcentral/ringcentral-web-phone/releases/latest](https://github.com/ringcentral/ringcentral-web-phone/releases/latest)
 3. Download audio files:
     1. [https://cdn.rawgit.com/ringcentral/ringcentral-web-phone/master/audio/incoming.ogg](https://cdn.rawgit.com/ringcentral/ringcentral-web-phone/master/audio/incoming.ogg)
@@ -195,10 +213,10 @@ Online demo is hosted at [https://ringcentral.github.io/ringcentral-web-phone](h
 
 ## API
 
-Except for some RingCentral-specific features the API is 100% the same as SIP.JS: http://sipjs.com/api/0.13.0: most of the time you will be working with RC-flavored [UserAgent](http://sipjs.com/api/0.13.0/ua) and [Session](http://sipjs.com/api/0.13.0/session) objects of SIP.JS.
+Except for some RingCentral-specific features the API is 100% the same as SIP.JS: https://github.com/onsip/SIP.js/releases/tag/0.20.0: most of the time you will be working with RC-flavored [UserAgent](https://github.com/onsip/SIP.js/blob/master/docs/api/sip.js.useragent.md) and [Session](https://github.com/onsip/SIP.js/blob/master/docs/api/sip.js.session.md) objects of SIP.JS.
 
-We encourage you to take a look at [Guides](http://sipjs.com/guides) section, especially
-[Make A Call](http://sipjs.com/guides/make-call) and [Receive A Call](http://sipjs.com/guides/receive-call/) articles.
+We encourage you to take a look at [Guides](https://sipjs.com/guides/) section, especially
+[Make A Call](https://sipjs.com/guides/make-call/) and [Receive A Call](https://sipjs.com/guides/receive-call/) articles.
 
 ### Constructor
 
@@ -301,7 +319,7 @@ supervisor and the call between customer and agent will be disconnected.
 
 Warm transfer puts current line on hold (if not done yet) then takes an existing line from arguments and makes transfer.
 
-####Handle Warm Transfer senario (Attended Transfer usecase) :
+#### Handle Warm Transfer senario (Attended Transfer usecase) :
 Steps:
 1. Put the current session on ``Hold`` as shown in the demo code
 2. Initiate a new session (Start new call)
@@ -312,8 +330,8 @@ Steps:
 $modal.find('.transfer-form button.warm').on('click', function(e) {
    session.hold().then(function() {
                 console.log('Placing the call on hold, initiating attended transfer');
-                var newSession = session.ua.invite($transfer.val().trim());
-                newSession.once('accepted', function() {
+                var newSession = session.userAgent.invite($transfer.val().trim());
+                newSession.on('established', function () {
                     console.log('New call initated. Click Complete to complete the transfer');
                     $modal.find('.transfer-form button.complete').on('click', function(e) {
                         session
@@ -346,6 +364,9 @@ session.stopRecord().then(...);
 ### Barge/Whisper
 
 Not yet implemented. Could be done by dialing \*83. The account should be enabled for barge/whisper access through system admin.
+
+## Upgrade Procedure from 0.8.9 to 0.9.0
+- [Migration Doc](Migration.md)
 
 ## Upgrade Procedure from v0.4.X to 0.8.9
 

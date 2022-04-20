@@ -271,7 +271,6 @@ async function register(this: WebPhoneUserAgent): Promise<void> {
             onAccept: (): void => {
                 this.emit(Events.UserAgent.Registered);
             },
-            // FIXME: Test this
             onReject: (response): void => {
                 if (!response) {
                     return;
@@ -304,7 +303,6 @@ function invite(this: WebPhoneUserAgent, number: string, options: InviteOptions 
         ...(options.homeCountryId ? [`P-rc-country-id: ${options.homeCountryId}`] : [])
     ];
 
-    // FIXME: Need to test this
     options.RTCConstraints =
         options.RTCConstraints || Object.assign({}, this.constraints, { optional: [{ DtlsSrtpKeyAgreement: 'true' }] });
     inviterOptions.sessionDescriptionHandlerModifiers = this.modifiers;

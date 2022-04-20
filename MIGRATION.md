@@ -2,7 +2,7 @@
 
 v0.9.0 is not fully backward compatible with v0.8.9. This is because sip.js has gone through a major release and sip.js 0.15.x to 0.16.x has been with no backward compatibility
 
-## 1. WebPhoneUserAgent
+## 1. [WebPhoneUserAgent](docs/api/interfaces/WebPhoneUserAgent.md)
 
 - The return type of `sendMessage` method has changed from `ClientContext` to `IncomingResponse`.
 More details on `IncomingResponse` can be found on sip.js documentation at [`IncomingResponse`](https://github.com/onsip/SIP.js/blob/master/docs/core/sip.js.incomingresponse.md)
@@ -13,7 +13,7 @@ More details on `IncomingResponse` can be found on sip.js documentation at [`Inc
 - `__onTransportConnected` internal method has been removed
 - `onTransportConnected` has been removed. Transport creation is now handeled by the `WebPhoneTransport.ts` class
 
-### Events
+### [Events](docs/api/interfaces/WebPhoneEvents.md#useragent)
 
 sip.js has removed all `userAgent` events
 WebPhone SDK will still supports some basic events on `WebPhoneUserAgent`
@@ -26,7 +26,7 @@ WebPhone SDK will still supports some basic events on `WebPhoneUserAgent`
 - `stopped` : Fired when UserAgent is stopped
 
 
-## 2. WebPhoneTransport
+## 2. [WebPhoneTransport](docs/api/interfaces/WebPhoneTransport.md)
 
 `sipTransportConstructor.ts` has been changed to `transport.ts`
 `WebPhoneSIPTransport` has been renamed to `WebPhoneTransport.ts`
@@ -39,7 +39,7 @@ WebPhone SDK will still supports some basic events on `WebPhoneUserAgent`
 - `disposeWs` method has been removed by `sip.js`
 - `onError` method has been removed by `sip.js`
 
-### Events
+### [Events](docs/api/interfaces/WebPhoneEvents.md#transport)
 
 sip.js has removed all `transport` events
 WebPhone SDK will still supports some basic events on `WebPhoneTransport`
@@ -52,7 +52,7 @@ WebPhone SDK will still supports some basic events on `WebPhoneTransport`
 - `switchBackProxy` : Fired when client should initiate connection back to main proxy
 - `closed` : Fired when maxReconnectionAttempts have exhausted trying to connect to one server or sip error is returned from the server
 
-## 3. WebPhoneSession
+## 3. [WebPhoneSession](docs/api/modules.md#webphonesession)
 
 `WebphoneSession` is now a union of `WebPhoneInvitation | WebPhoneInviter`
 - `__sendRequest` internal method has been removed
@@ -91,7 +91,7 @@ WebPhone SDK will still supports some basic events on `WebPhoneTransport`
 - `reinvite` now takes in `options` of type [`SessionInviteOptions`](https://github.com/onsip/SIP.js/blob/master/docs/api/sip.js.sessioninviteoptions.md)
 - The type of the payload for `updateReceived` event has changed from `IncomingRequest` to [`IncomingRequestMessage`](https://github.com/onsip/SIP.js/blob/master/docs/core/sip.js.incomingrequestmessage.md)
 
-### Events
+### [Events](docs/api/interfaces/WebPhoneEvents.md#session)
 
 sip.js has removed all `session` events
 WebPhone SDK will still supports some basic events on `WebPhoneSession`
@@ -107,7 +107,7 @@ WebPhone SDK will still supports some basic events on `WebPhoneSession`
 - `qos-published`: Fired when QOS is pulished to the backend server
 - `rtpStat`: Fired when RTP Stat Report is generted
 
-## 4. MediaStreamsImpl
+## 4. [MediaStreamsImpl](docs/api/classes/MediaStreamsImpl.md)
 - `onMediaConnectionStateChange` order of params has changed. The method now takes `state: string` as the first parameter and `session: WebPhoneSession` as the second parameter
 - `on` method has been removed
 - `localStream` has been removed

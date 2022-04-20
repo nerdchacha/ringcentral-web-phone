@@ -425,7 +425,6 @@ $(function () {
             session.hold().then(function () {
                 console.log('Placing the call on hold, initiating attended transfer');
                 var newSession = session.userAgent.invite($transfer.val().trim());
-                // FIXME: Event name changed
                 newSession.on('established', function () {
                     console.log('New call initated. Click Complete to complete the transfer');
                     $modal.find('.transfer-form button.complete').on('click', function (e) {
@@ -471,7 +470,6 @@ $(function () {
         });
 
         $modal.find('.hangup').on('click', function () {
-            // FIXME:
             session.dispose();
         });
 
