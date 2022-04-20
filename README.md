@@ -366,7 +366,7 @@ session.stopRecord().then(...);
 Not yet implemented. Could be done by dialing \*83. The account should be enabled for barge/whisper access through system admin.
 
 ## Upgrade Procedure from 0.8.9 to 0.9.0
-- [Migration Doc](Migration.md)
+- [Migration Doc](MIGRATION.md)
 
 ## Upgrade Procedure from v0.4.X to 0.8.9
 
