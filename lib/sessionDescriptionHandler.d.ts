@@ -230,4 +230,6 @@ export declare class SessionDescriptionHandler implements SessionDescriptionHand
      */
     private initPeerConnectionEventHandlers;
 }
+export declare function defaultPeerConnectionConfiguration(): RTCConfiguration;
+export declare function defaultMediaStreamFactory(): MediaStreamFactory;
 export declare const defaultSessionDescriptionFactory: (session: Session, options?: WebPhoneSessionDescriptionHandlerFactoryOptions) => SessionDescriptionHandler;

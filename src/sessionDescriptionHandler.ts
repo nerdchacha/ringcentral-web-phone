@@ -1004,7 +1004,7 @@ export class SessionDescriptionHandler implements SessionDescriptionHandlerDefin
     }
 }
 
-function defaultPeerConnectionConfiguration(): RTCConfiguration {
+export function defaultPeerConnectionConfiguration(): RTCConfiguration {
     return {
         bundlePolicy: 'balanced', // Note: max-bundle is not supported by the demo backend currently (5/15/17)
         certificates: undefined,
@@ -1016,7 +1016,7 @@ function defaultPeerConnectionConfiguration(): RTCConfiguration {
     } as RTCConfiguration;
 }
 
-function defaultMediaStreamFactory(): MediaStreamFactory {
+export function defaultMediaStreamFactory(): MediaStreamFactory {
     return (constraints: MediaStreamConstraints): Promise<MediaStream> => {
         // if no audio or video, return a media stream without tracks
         if (!constraints.audio && !constraints.video) {
