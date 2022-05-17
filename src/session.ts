@@ -846,7 +846,7 @@ function setHold(session: WebPhoneSession, hold: boolean): Promise<void> {
                     const match = sdp.match(/a=(sendrecv|sendonly|recvonly|inactive)/);
                     const direction = match ? match[1] : '';
                     session.__localHold = response.message.statusCode === 200 && direction === 'sendonly';
-                    this.logger.log('localhold is set to ' + this.__localHold);
+                    (session as any).logger.log('localhold is set to ' + session.__localHold);
                     enableReceiverTracks(session, !session.held);
                     enableSenderTracks(session, !session.held && !session.muted);
                     resolve();
