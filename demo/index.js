@@ -322,8 +322,8 @@ $(function () {
         var $conference = $modal.find('input[name=conference]').eq(0);
 
         var interval = setInterval(function () {
-            var status = session.state;
-            $info.text(`Session state: ${status}\n`);
+            var time = session.startTime ? Math.round((Date.now() - session.startTime) / 1000) + 's' : 'Ringing';
+            $info.text('time: ' + time + '\n' + 'startTime: ' + JSON.stringify(session.startTime, null, 2) + '\n');
         }, 1000);
 
         function close() {

@@ -98,6 +98,8 @@ export class CommonSession {
     rcHeaders?: RCHeaders;
     /** Flag to represent if reinvite request was sent because there was no audio reported */
     reinviteForNoAudioSent?: boolean;
+    /** Time when session was started */
+    startTime?: Date | undefined;
     /** @ignore */
     __accept?: typeof Invitation.prototype.accept;
     /** @ignore */
@@ -263,13 +265,11 @@ export function patchWebphoneSession(session: WebPhoneSession): WebPhoneSession 
         switch (newState) {
             case SessionState.Establishing: {
                 session.emit(Events.Session.Establishing);
-                (session.sessionDescriptionHandler as SessionDescriptionHandler).peerConnectionDelegate = {
-                    ontrack: session.addTrack.bind(session)
-                };
                 break;
             }
             case SessionState.Established: {
                 stopPlaying(session);
+                session.addTrack();
                 session.emit(Events.Session.Established);
                 break;
             }
@@ -717,6 +717,7 @@ function accept(this: WebPhoneSession, options: InvitationAcceptOptions = {}): P
 
     return new Promise((resolve, reject) => {
         try {
+            this.startTime = new Date();
             this.__accept(options);
             resolve(this);
         } catch (e) {

@@ -319,7 +319,15 @@ function invite(this: WebPhoneUserAgent, number: string, options: InviteOptions 
         UserAgent.makeURI(`sip:${number}@${this.sipInfo.domain}`),
         inviterOptions
     );
-    inviter.invite().then(() => this.emit(Events.UserAgent.InviteSent));
+    inviter
+        .invite({
+            requestDelegate: {
+                onAccept: () => {
+                    inviter.startTime = new Date();
+                }
+            }
+        })
+        .then(() => this.emit(Events.UserAgent.InviteSent, inviter));
     patchWebphoneSession(inviter);
     return inviter;
 }
