@@ -5,5 +5,5 @@
       "git add"
     ]
   },
-  "ignore": ["docs/**", "lib/**"]
+  "ignore": ["docs/**", "lib/**", "dist/**"]
 }
