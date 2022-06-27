@@ -37,6 +37,10 @@ export interface WebPhoneEvents {
     };
     /** All WebPhone events related to Session */
     Session: {
+        /** Fired when Session is accepted. */
+        Accepted: string;
+        /** Fired when Session is progress. */
+        Progress: string;
         /** Fired when session is muted. */
         Muted: string;
         /** Fired when session is unmuted. */
