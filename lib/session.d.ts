@@ -68,6 +68,8 @@ export declare class CommonSession {
     rcHeaders?: RCHeaders;
     /** Flag to represent if reinvite request was sent because there was no audio reported */
     reinviteForNoAudioSent?: boolean;
+    /** Time when session was started */
+    startTime?: Date | undefined;
     /** @ignore */
     __accept?: typeof Invitation.prototype.accept;
     /** @ignore */
