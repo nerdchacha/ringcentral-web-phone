@@ -717,8 +717,9 @@ function accept(this: WebPhoneSession, options: InvitationAcceptOptions = {}): P
 
     return new Promise((resolve, reject) => {
         try {
-            this.startTime = new Date();
             this.__accept(options);
+            this.startTime = new Date();
+            this.emit(Events.Session.Accepted, this.request);
             resolve(this);
         } catch (e) {
             reject(e);

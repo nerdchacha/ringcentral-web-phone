@@ -322,8 +322,12 @@ function invite(this: WebPhoneUserAgent, number: string, options: InviteOptions 
     inviter
         .invite({
             requestDelegate: {
-                onAccept: () => {
+                onAccept: (inviteResponse) => {
                     inviter.startTime = new Date();
+                    inviter.emit(Events.Session.Accepted, inviteResponse);
+                },
+                onProgress: (inviteResponse) => {
+                    inviter.emit(Events.Session.Progress, inviteResponse);
                 }
             }
         })
