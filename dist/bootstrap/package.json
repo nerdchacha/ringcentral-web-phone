@@ -2,7 +2,7 @@
   "_args": [
     [
       "bootstrap@3.4.1",
-      "/Users/yatingera/Desktop/Ringcentral/ringcentral-web-phone-forked"
+      "/Users/embbnux.ji/work/ringcentral-web-phone"
     ]
   ],
   "_development": true,
@@ -27,7 +27,7 @@
   ],
   "_resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.4.1.tgz",
   "_spec": "3.4.1",
-  "_where": "/Users/yatingera/Desktop/Ringcentral/ringcentral-web-phone-forked",
+  "_where": "/Users/embbnux.ji/work/ringcentral-web-phone",
   "author": {
     "name": "Twitter, Inc."
   },
