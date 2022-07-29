@@ -707,23 +707,23 @@ function dtmf(this: WebPhoneSession, dtmf: string, duration = 100, interToneGap 
     throw new Error('Send DTMF failed: ' + (!dtmfSender ? 'no sender' : sender));
 }
 
-function accept(this: WebPhoneSession, options: InvitationAcceptOptions = {}): Promise<WebPhoneSession> {
+async function accept(this: WebPhoneSession, options: InvitationAcceptOptions = {}): Promise<WebPhoneSession> {
     options = options || {};
     options.extraHeaders = (options.extraHeaders || []).concat(this.userAgent.defaultHeaders);
     options.sessionDescriptionHandlerOptions = Object.assign({}, options.sessionDescriptionHandlerOptions);
     options.sessionDescriptionHandlerOptions.constraints =
         options.sessionDescriptionHandlerOptions.constraints ||
         Object.assign({}, this.userAgent.constraints, { optional: [{ DtlsSrtpKeyAgreement: 'true' }] });
-    return this.__accept(options).then(function () {
-            this.startTime = new Date();
-            this.emit(Events.Session.Accepted, this.request);
-            return this;
-        })
-        .catch(function (e) {
-            if (e.message.indexOf('Permission denied') > -1) {
-                this.emit(Events.Session.UserMediaFailed);
-            }
-        });
+    try {
+        await this.__accept(options);
+        this.startTime = new Date();
+        this.emit(Events.Session.Accepted, this.request);
+        return this;
+    } catch (e) {
+        if (e.message.indexOf('Permission denied') > -1) {
+            this.emit(Events.Session.UserMediaFailed);
+        }
+    }
 }
 
 async function forward(
