@@ -61,6 +61,10 @@ export interface WebPhoneEvents {
         QOSPublished: string;
         /** Fired when RTP Stat Report is generted */
         RTPStat: string;
+        /** Fired when SessionDescriptionHandler is created */
+        SessionDescriptionHandlerCreated: string;
+        /** Fired when get user media failed */
+        UserMediaFailed: string;
     };
 }
 
@@ -97,6 +101,8 @@ export const Events: WebPhoneEvents = {
         UpdateReceived: 'updateReceived',
         MoveToRcv: 'moveToRcv',
         QOSPublished: 'qos-published',
-        RTPStat: 'rtpStat'
+        RTPStat: 'rtpStat',
+        SessionDescriptionHandlerCreated: 'sessionDescriptionHandlerCreated',
+        UserMediaFailed: 'UserMediaFailed',
     }
 };

@@ -331,7 +331,13 @@ function invite(this: WebPhoneUserAgent, number: string, options: InviteOptions 
                 }
             }
         })
-        .then(() => this.emit(Events.UserAgent.InviteSent, inviter));
+        .then(() => this.emit(Events.UserAgent.InviteSent, inviter))
+        .catch((e) => {
+            if (e.message.indexOf('Permission denied') > -1) {
+                inviter.emit(Events.Session.UserMediaFailed);
+            }
+            throw e;
+        });
     patchWebphoneSession(inviter);
     return inviter;
 }

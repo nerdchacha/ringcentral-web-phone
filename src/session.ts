@@ -714,17 +714,16 @@ function accept(this: WebPhoneSession, options: InvitationAcceptOptions = {}): P
     options.sessionDescriptionHandlerOptions.constraints =
         options.sessionDescriptionHandlerOptions.constraints ||
         Object.assign({}, this.userAgent.constraints, { optional: [{ DtlsSrtpKeyAgreement: 'true' }] });
-
-    return new Promise((resolve, reject) => {
-        try {
-            this.__accept(options);
+    return this.__accept(options).then(function () {
             this.startTime = new Date();
             this.emit(Events.Session.Accepted, this.request);
-            resolve(this);
-        } catch (e) {
-            reject(e);
-        }
-    });
+            return this;
+        })
+        .catch(function (e) {
+            if (e.message.indexOf('Permission denied') > -1) {
+                this.emit(Events.Session.UserMediaFailed);
+            }
+        });
 }
 
 async function forward(
@@ -906,6 +905,7 @@ function stopPlaying(session: WebPhoneSession): void {
 }
 
 export function onSessionDescriptionHandlerCreated(session: WebPhoneSession): void {
+    session.emit(Events.Session.SessionDescriptionHandlerCreated);
     if (!session.userAgent.enableQos) {
         return;
     }
