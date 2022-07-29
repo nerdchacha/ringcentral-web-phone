@@ -615,7 +615,7 @@ async function blindTransfer(
 ): Promise<OutgoingReferRequest> {
     (this as any).logger.log('Call transfer initiated');
     target = typeof target === 'string' ? UserAgent.makeURI(`sip:${target}@${this.userAgent.sipInfo.domain}`) : target;
-    return Promise.resolve(this.refer(target, options));
+    return this.refer(target, options);
 }
 
 async function warmTransfer(
@@ -628,7 +628,7 @@ async function warmTransfer(
     );
     target = typeof target === 'string' ? UserAgent.makeURI(`sip:${target}@${this.userAgent.sipInfo.domain}`) : target;
     (this as any).logger.log('Completing warm transfer');
-    return Promise.resolve(this.refer(target, options));
+    return this.refer(target, options);
 }
 
 async function transfer(
