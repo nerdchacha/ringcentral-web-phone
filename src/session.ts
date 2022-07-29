@@ -615,7 +615,7 @@ async function blindTransfer(
 ): Promise<OutgoingReferRequest> {
     (this as any).logger.log('Call transfer initiated');
     target = typeof target === 'string' ? UserAgent.makeURI(`sip:${target}@${this.userAgent.sipInfo.domain}`) : target;
-    return Promise.resolve(this.refer(target, options));
+    return this.refer(target, options);
 }
 
 async function warmTransfer(
@@ -628,7 +628,7 @@ async function warmTransfer(
     );
     target = typeof target === 'string' ? UserAgent.makeURI(`sip:${target}@${this.userAgent.sipInfo.domain}`) : target;
     (this as any).logger.log('Completing warm transfer');
-    return Promise.resolve(this.refer(target, options));
+    return this.refer(target, options);
 }
 
 async function transfer(
@@ -707,23 +707,23 @@ function dtmf(this: WebPhoneSession, dtmf: string, duration = 100, interToneGap 
     throw new Error('Send DTMF failed: ' + (!dtmfSender ? 'no sender' : sender));
 }
 
-function accept(this: WebPhoneSession, options: InvitationAcceptOptions = {}): Promise<WebPhoneSession> {
+async function accept(this: WebPhoneSession, options: InvitationAcceptOptions = {}): Promise<WebPhoneSession> {
     options = options || {};
     options.extraHeaders = (options.extraHeaders || []).concat(this.userAgent.defaultHeaders);
     options.sessionDescriptionHandlerOptions = Object.assign({}, options.sessionDescriptionHandlerOptions);
     options.sessionDescriptionHandlerOptions.constraints =
         options.sessionDescriptionHandlerOptions.constraints ||
         Object.assign({}, this.userAgent.constraints, { optional: [{ DtlsSrtpKeyAgreement: 'true' }] });
-    return this.__accept(options).then(function () {
-            this.startTime = new Date();
-            this.emit(Events.Session.Accepted, this.request);
-            return this;
-        })
-        .catch(function (e) {
-            if (e.message.indexOf('Permission denied') > -1) {
-                this.emit(Events.Session.UserMediaFailed);
-            }
-        });
+    try {
+        await this.__accept(options);
+        this.startTime = new Date();
+        this.emit(Events.Session.Accepted, this.request);
+        return this;
+    } catch (e) {
+        if (e.message.indexOf('Permission denied') > -1) {
+            this.emit(Events.Session.UserMediaFailed);
+        }
+    }
 }
 
 async function forward(
