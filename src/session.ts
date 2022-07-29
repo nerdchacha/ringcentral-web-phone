@@ -905,7 +905,6 @@ function stopPlaying(session: WebPhoneSession): void {
 }
 
 export function onSessionDescriptionHandlerCreated(session: WebPhoneSession): void {
-    session.emit(Events.Session.SessionDescriptionHandlerCreated);
     if (!session.userAgent.enableQos) {
         return;
     }
