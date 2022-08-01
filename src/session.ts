@@ -849,8 +849,10 @@ function setHold(session: WebPhoneSession, hold: boolean): Promise<void> {
             requestDelegate: {
                 onAccept: async (response): Promise<void> => {
                     session.held = hold;
-                    const sdp = (await session.sessionDescriptionHandler.getDescription()).body;
-                    const match = sdp.match(/a=(sendrecv|sendonly|recvonly|inactive)/);
+                    const sessionDescriptionHandler = session.sessionDescriptionHandler as SessionDescriptionHandler;
+                    const peerConnection = sessionDescriptionHandler.peerConnection;
+                    const localSdp = peerConnection.localDescription.sdp;
+                    const match = localSdp.match(/a=(sendrecv|sendonly|recvonly|inactive)/);
                     const direction = match ? match[1] : '';
                     session.__localHold = response.message.statusCode === 200 && direction === 'sendonly';
                     (session as any).logger.log('localhold is set to ' + session.__localHold);
