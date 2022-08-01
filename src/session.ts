@@ -150,6 +150,8 @@ export class CommonSession {
     reinvite?: typeof reinvite;
     /** Remove event listener */
     removeListener?: typeof EventEmitter.prototype.removeListener;
+    /** Remove all event listeners */
+    removeAllListeners?: typeof EventEmitter.prototype.removeAllListeners;
     /** RingCentral reply with message implementation */
     replyWithMessage?: typeof replyWithMessage;
     /**
@@ -242,6 +244,7 @@ export function patchWebphoneSession(session: WebPhoneSession): WebPhoneSession 
     session.once = eventEmitter.once.bind(eventEmitter);
     session.addListener = eventEmitter.addListener.bind(eventEmitter);
     session.removeListener = eventEmitter.removeListener.bind(eventEmitter);
+    session.removeAllListeners = eventEmitter.removeAllListeners.bind(eventEmitter);
     session.emit = eventEmitter.emit.bind(eventEmitter);
     session.sendInfoAndRecieveResponse = sendInfoAndRecieveResponse.bind(session);
     session.startRecord = startRecord.bind(session);

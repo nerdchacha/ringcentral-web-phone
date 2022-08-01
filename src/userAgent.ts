@@ -104,6 +104,8 @@ export interface WebPhoneUserAgent extends UserAgent {
     register?: () => Promise<void>;
     /** Remove event listener from list of listeners for that event */
     removeListener?: typeof EventEmitter.prototype.removeListener;
+    /** Remove all event listener from list of listeners for that event */
+    removeAllListeners?: typeof EventEmitter.prototype.removeAllListeners;
     /**
      * @internal
      * Utility function used to send message to backend server
@@ -160,6 +162,7 @@ export function createWebPhoneUserAgent(
     userAgent.once = eventEmitter.once.bind(eventEmitter);
     userAgent.addListener = eventEmitter.addListener.bind(eventEmitter);
     userAgent.removeListener = eventEmitter.removeListener.bind(eventEmitter);
+    userAgent.removeAllListeners = eventEmitter.removeAllListeners.bind(eventEmitter);
     userAgent.defaultHeaders = [`P-rc-endpoint-id: ${id}`, `Client-id: ${options.appKey}`];
     userAgent.regId = options.regId;
     userAgent.instanceId = options.instanceId;

@@ -79,6 +79,8 @@ export interface WebPhoneTransport extends Transport {
      * alias for addListener
      */
     on?: typeof EventEmitter.prototype.on;
+    /** Register functions to be called once when events are fired on the transport object */
+    once?: typeof EventEmitter.prototype.once;
     /** @ignore */
     onSipErrorCode?: typeof onSipErrorCode;
     /** Function to try reconnecting to the transport. Is automatically triggered when transport connection is dropped or `sipErrorCode` is returned from backend server*/
@@ -87,6 +89,10 @@ export interface WebPhoneTransport extends Transport {
      * Unregister functions to be called when events are fired on the transport object
      */
     removeListener?: typeof EventEmitter.prototype.removeListener;
+    /**
+     * Unregister all functions to be called when events are fired on the transport object
+     */
+    removeAllListeners?: typeof EventEmitter.prototype.removeAllListeners;
 }
 
 export function createWebPhoneTransport(transport: WebPhoneTransport, options: WebPhoneOptions): WebPhoneTransport {
@@ -95,8 +101,10 @@ export function createWebPhoneTransport(transport: WebPhoneTransport, options: W
     const eventEmitter = new EventEmitter();
     transport.on = eventEmitter.on.bind(eventEmitter);
     transport.off = eventEmitter.off.bind(eventEmitter);
+    transport.once = eventEmitter.once.bind(eventEmitter);
     transport.addListener = eventEmitter.addListener.bind(eventEmitter);
     transport.removeListener = eventEmitter.removeListener.bind(eventEmitter);
+    transport.removeAllListeners = eventEmitter.removeAllListeners.bind(eventEmitter);
     transport.emit = eventEmitter.emit.bind(eventEmitter);
     transport.mainProxy = options.transportServers[0];
     transport.switchBackInterval = options.switchBackInterval;
