@@ -97,6 +97,7 @@ export interface WebPhoneTransport extends Transport {
 
 export function createWebPhoneTransport(transport: WebPhoneTransport, options: WebPhoneOptions): WebPhoneTransport {
     transport.reconnectionAttempts = 0;
+    transport.sipErrorCodes = options.sipErrorCodes;
     transport.servers = options.transportServers;
     const eventEmitter = new EventEmitter();
     transport.on = eventEmitter.on.bind(eventEmitter);

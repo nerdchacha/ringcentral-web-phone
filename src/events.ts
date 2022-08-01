@@ -24,6 +24,8 @@ export interface WebPhoneEvents {
         Registered: string;
         /** Fired when UserAgent is unregistered from the registerer. */
         Unregistered: string;
+        /** Fired when UserAgent register failed. */
+        RegistrationFailed: string;
         /** Fired when Invite is sent. */
         InviteSent: string;
         /** Fired when Invitation is received. */
@@ -81,6 +83,7 @@ export const Events: WebPhoneEvents = {
     UserAgent: {
         Registered: 'registered',
         Unregistered: 'unregistered',
+        RegistrationFailed: 'registrationFailed',
         InviteSent: 'inviteSent',
         Invite: 'invite',
         ProvisionUpdate: 'provisionUpdate',
