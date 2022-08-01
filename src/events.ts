@@ -83,7 +83,7 @@ export const Events: WebPhoneEvents = {
         Unregistered: 'unregistered',
         InviteSent: 'inviteSent',
         Invite: 'invite',
-        ProvisionUpdate: 'ProvisionUpdate',
+        ProvisionUpdate: 'provisionUpdate',
         Started: 'started',
         Stopped: 'stopped'
     },
