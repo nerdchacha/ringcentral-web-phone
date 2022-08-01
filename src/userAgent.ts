@@ -284,6 +284,7 @@ async function register(this: WebPhoneUserAgent): Promise<void> {
                 if (this.transport.isSipErrorCode(response.message.statusCode)) {
                     this.transport.onSipErrorCode();
                 }
+                this.emit(Events.UserAgent.RegistrationFailed, response);
                 (this as any).logger.warn('UA Registration Failed');
             }
         }
