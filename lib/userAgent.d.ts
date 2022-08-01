@@ -76,6 +76,8 @@ export interface WebPhoneUserAgent extends UserAgent {
     off?: typeof EventEmitter.prototype.off;
     /** To add event listeneres to be triggered whenever an event on UserAgent is emitted */
     on?: typeof EventEmitter.prototype.on;
+    /** Add once event listener from list of listeners for that event */
+    once?: typeof EventEmitter.prototype.once;
     /**
      * @internal
      * Function which will be called when session is created. It's value is picked using options.onSession when instantiating userAgent object

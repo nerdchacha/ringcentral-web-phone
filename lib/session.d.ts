@@ -110,6 +110,8 @@ export declare class CommonSession {
     off?: typeof EventEmitter.prototype.off;
     /** Add event listener. Same as addListener */
     on?: typeof EventEmitter.prototype.on;
+    /** Add once event listener. Same as addListener */
+    once?: typeof EventEmitter.prototype.once;
     /** Returns if the call is on hold locally or not */
     onLocalHold?: typeof onLocalHold;
     /** RingCentral park implementation */
