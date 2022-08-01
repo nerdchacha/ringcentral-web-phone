@@ -140,6 +140,8 @@ export class CommonSession {
     off?: typeof EventEmitter.prototype.off;
     /** Add event listener. Same as addListener */
     on?: typeof EventEmitter.prototype.on;
+    /** Add once event listener. Same as addListener */
+    once?: typeof EventEmitter.prototype.once;
     /** Returns if the call is on hold locally or not */
     onLocalHold?: typeof onLocalHold;
     /** RingCentral park implementation */
@@ -237,6 +239,7 @@ export function patchWebphoneSession(session: WebPhoneSession): WebPhoneSession 
     const eventEmitter = new EventEmitter();
     session.on = eventEmitter.on.bind(eventEmitter);
     session.off = eventEmitter.off.bind(eventEmitter);
+    session.once = eventEmitter.once.bind(eventEmitter);
     session.addListener = eventEmitter.addListener.bind(eventEmitter);
     session.removeListener = eventEmitter.removeListener.bind(eventEmitter);
     session.emit = eventEmitter.emit.bind(eventEmitter);
