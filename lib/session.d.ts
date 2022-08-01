@@ -120,6 +120,8 @@ export declare class CommonSession {
     reinvite?: typeof reinvite;
     /** Remove event listener */
     removeListener?: typeof EventEmitter.prototype.removeListener;
+    /** Remove all event listeners */
+    removeAllListeners?: typeof EventEmitter.prototype.removeAllListeners;
     /** RingCentral reply with message implementation */
     replyWithMessage?: typeof replyWithMessage;
     /**

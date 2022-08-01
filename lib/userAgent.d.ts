@@ -87,6 +87,8 @@ export interface WebPhoneUserAgent extends UserAgent {
     register?: () => Promise<void>;
     /** Remove event listener from list of listeners for that event */
     removeListener?: typeof EventEmitter.prototype.removeListener;
+    /** Remove all event listener from list of listeners for that event */
+    removeAllListeners?: typeof EventEmitter.prototype.removeAllListeners;
     /**
      * @internal
      * Utility function used to send message to backend server
