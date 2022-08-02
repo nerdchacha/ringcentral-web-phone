@@ -4,6 +4,7 @@ import {
     UserAgentOptions,
     UserAgentState,
     Registerer,
+    RegistererState,
     Inviter,
     InviterOptions,
     SessionDescriptionHandlerModifier,
@@ -210,6 +211,18 @@ export function createWebPhoneUserAgent(
             }
         }
     });
+    userAgent.registerer.stateChange.addListener((newState) => {
+        switch (newState) {
+            case RegistererState.Registered: {
+                userAgent.emit(Events.UserAgent.Registered);
+                break;
+            }
+            case RegistererState.Unregistered: {
+                userAgent.emit(Events.UserAgent.Unregistered);
+                break;
+            }
+        }
+    });
 
     return userAgent;
 }
@@ -274,9 +287,6 @@ function sendMessage(this: WebPhoneUserAgent, to: string, messageData: string): 
 async function register(this: WebPhoneUserAgent): Promise<void> {
     await this.registerer.register({
         requestDelegate: {
-            onAccept: (): void => {
-                this.emit(Events.UserAgent.Registered);
-            },
             onReject: (response): void => {
                 if (!response) {
                     return;
@@ -292,13 +302,7 @@ async function register(this: WebPhoneUserAgent): Promise<void> {
 }
 
 async function unregister(this: WebPhoneUserAgent): Promise<void> {
-    await this.registerer.unregister({
-        requestDelegate: {
-            onAccept: (): void => {
-                this.emit(Events.UserAgent.Unregistered);
-            }
-        }
-    });
+    await this.registerer.unregister();
 }
 
 function invite(this: WebPhoneUserAgent, number: string, options: InviteOptions = {}): WebPhoneSession {
