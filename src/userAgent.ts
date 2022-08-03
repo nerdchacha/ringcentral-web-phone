@@ -335,10 +335,10 @@ function invite(this: WebPhoneUserAgent, number: string, options: InviteOptions 
             requestDelegate: {
                 onAccept: (inviteResponse) => {
                     inviter.startTime = new Date();
-                    inviter.emit(Events.Session.Accepted, inviteResponse);
+                    inviter.emit(Events.Session.Accepted, inviteResponse.message);
                 },
                 onProgress: (inviteResponse) => {
-                    inviter.emit(Events.Session.Progress, inviteResponse);
+                    inviter.emit(Events.Session.Progress, inviteResponse.message);
                 }
             }
         })
