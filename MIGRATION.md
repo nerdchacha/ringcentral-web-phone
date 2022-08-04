@@ -19,9 +19,10 @@ sip.js has removed all `userAgent` events
 WebPhone SDK will still supports some basic events on `WebPhoneUserAgent`
 - `registered` : Fired when UserAgent is registered with the registerer
 - `unregistered` : Fired when UserAgent is unregistered from the registerer
+- `registrationFailed`: Fired when UserAgent is registered with failure state
 - `inviteSent` : Fired when Invite is sent
 - `invite` : Fired when Invitation is received
-- `ProvisionUpdate` : Fired when provisionUpdate notification is received from RingCentral backend
+- `provisionUpdate` : Fired when provisionUpdate notification is received from RingCentral backend
 - `started` : Fired when UserAgent is started
 - `stopped` : Fired when UserAgent is stopped
 
@@ -100,12 +101,15 @@ WebPhone SDK will still supports some basic events on `WebPhoneSession`
 - `unmuted`: Fired when session is unmuted
 - `establishing`: Fired when session is established
 - `established`: Fired when session is established
+- `accepted`: Fired when session is accepted
+- `progress`: Fired when session is progress state
 - `terminating`: Fired when session is terminating
 - `terminated`: Fired when session is terminated
-- `updateReceived`: Fired when UPDATE request is recieved over socket
-- `moveToRcv`: Fired when INFO request is recieved over socket with move to rcv instruction
-- `qos-published`: Fired when QOS is pulished to the backend server
-- `rtpStat`: Fired when RTP Stat Report is generted
+- `updateReceived`: Fired when UPDATE request is received over socket
+- `moveToRcv`: Fired when INFO request is received over socket with move to rcv instruction
+- `qos-published`: Fired when QOS is punished to the backend server
+- `rtpStat`: Fired when RTP Stat Report is generated
+- `userMediaFailed`: Fired when getting user media is failed
 
 ## 4. [MediaStreamsImpl](docs/api/classes/MediaStreamsImpl.md)
 - `onMediaConnectionStateChange` order of params has changed. The method now takes `state: string` as the first parameter and `session: WebPhoneSession` as the second parameter
